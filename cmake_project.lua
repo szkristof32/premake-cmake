@@ -15,6 +15,7 @@
 local p = premake
 local tree = p.tree
 local project = p.project
+local workspace = p.workspace
 local config = p.config
 local cmake = p.modules.cmake
 
@@ -213,14 +214,14 @@ function m.generate(prj)
 			-- test locally in the project folder first (this is the most likely location)
 			local testname = path.join(cfg.project.basedir, pch)
 			if os.isfile(testname) then
-				pch = project.getrelative(cfg.project, testname)
+				pch = workspace.getrelative(cfg.workspace, testname)
 				found = true
 			else
 				-- else scan in all include dirs.
 				for _, incdir in ipairs(cfg.includedirs) do
 					testname = path.join(incdir, pch)
 					if os.isfile(testname) then
-						pch = project.getrelative(cfg.project, testname)
+						pch = workspace.getrelative(cfg.workspace, testname)
 						found = true
 						break
 					end
@@ -228,7 +229,7 @@ function m.generate(prj)
 			end
 
 			if not found then
-				pch = project.getrelative(cfg.project, path.getabsolute(pch))
+				pch = workspace.getrelative(cfg.workspace, path.getabsolute(pch))
 			end
 
 			_p('if(CMAKE_BUILD_TYPE STREQUAL %s)', cmake.cfgname(cfg))
