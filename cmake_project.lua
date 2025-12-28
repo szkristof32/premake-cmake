@@ -99,6 +99,9 @@ function m.generate(prj)
 		for _, includedir in ipairs(cfg.includedirs) do
 			_x(1, '$<$<CONFIG:%s>:%s>', cmake.cfgname(cfg), includedir)
 		end
+		for _, includedir in ipairs(cfg.externalincludedirs) do
+			_x(1, '$<$<CONFIG:%s>:%s>', cmake.cfgname(cfg), includedir)
+		end
 		_p(')')
 
 		-- defines
